@@ -1,10 +1,25 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: A starter AWS Lambda function.
 Resources:
+  Table:
+    Properties:
+      PrimaryKey:
+        Name: greeting
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+    Type: AWS::Serverless::SimpleTable
   helloworldpython3:
     Properties:
-      CodeUri: s3://aws-course-sam-bucket-hr/f67fd1d38d012d2ff213aec5ffce5f5b
+      CodeUri: s3://aws-course-sam-bucket-hr/85c8284fa4f164e128516bcf9a84acbd
       Description: A starter AWS Lambda function.
+      Environment:
+        Variables:
+          REGION_NAME:
+            Ref: AWS::Region
+          TABLE_NAME:
+            Ref: Table
       Events:
         HelloWorldSAMApi:
           Properties:
@@ -13,6 +28,10 @@ Resources:
           Type: Api
       Handler: main.lambda_handler
       MemorySize: 128
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Table
       Runtime: python3.6
       Timeout: 3
     Type: AWS::Serverless::Function
