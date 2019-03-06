@@ -3,8 +3,14 @@ Description: A starter AWS Lambda function.
 Resources:
   helloworldpython3:
     Properties:
-      CodeUri: s3://aws-course-sam-bucket-hr/214470635772d4c0dd3154d68189391e
+      CodeUri: s3://aws-course-sam-bucket-hr/f67fd1d38d012d2ff213aec5ffce5f5b
       Description: A starter AWS Lambda function.
+      Events:
+        HelloWorldSAMApi:
+          Properties:
+            Method: GET
+            Path: /hello
+          Type: Api
       Handler: main.lambda_handler
       MemorySize: 128
       Runtime: python3.6
